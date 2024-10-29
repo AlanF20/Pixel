@@ -19,27 +19,31 @@ contract Pixel is ERC721, Ownable {
         _baseURIextended = baseUri;
     }
 
-    function _setTokenUri(uint256 tokenId, string memory _tokenURI) {
+    function _setTokenUri(uint256 tokenId, string memory _tokenURI) internal virtual{
       require(_exists(tokenId), "ERC721Meta: URI set of nonexisten token");
       _tokenURIs[tokenId] = _tokenURI; 
     }
 
     // toda variable que tenga memoria se guarda en la memoria de la VM
     function tokenURI(uint256 tokenId) public view virtual override returns(string memory) {
-      require(_exist(tokenId), "ERC721Metadata: URI query for nonexisten token");
+      require(_exists(tokenId), "ERC721Metadata: URI query for nonexisten token");
       string memory _tokenURI = _tokenURIs[tokenId];
       string memory base = _baseURI();
 
-      if(bytes(base).length === 0){
+      if(bytes(base).length == 0){
         return _tokenURI;
       }
       if(bytes(_tokenURI).length > 0){
-        return string(abi.encodePacked(base, _tokenUri)); 
+        return string(abi.encodePacked(base, _tokenURI)); 
       }
       return string(abi.encodePacked(base, tokenId.toString()));
     }
 
-    function mintNFT(address recipient, string memory _tokenURI) public onlyOwner return(uint256){
-      
+    function mintNFT(address recipient, string memory _tokenURI) public onlyOwner returns(uint256){
+      _tokenIds.increment();
+      uint256 newItemId = _tokenIds.current();
+      _mint(recipient, newItemId);
+      _setTokenUri(newItemId, _tokenURI);
+      return newItemId;
     }
 }
