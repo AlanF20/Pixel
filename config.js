@@ -4,7 +4,7 @@ export const {
   PRIV_KEY,
   PINATA_API_KEY,
   PINATA_SECRET_KEY,
-  CONTACT_ADDRESS
- } = process.env
+  CONTRACT_ADDRESS,
+	PORT
+} = process.env
 
- console.log(API_URL, PUB_KEY, PRIV_KEY, PINATA_API_KEY, PINATA_SECRET_KEY, CONTACT_ADDRESS)
